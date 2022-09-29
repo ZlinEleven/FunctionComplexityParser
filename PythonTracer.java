@@ -39,6 +39,7 @@ public class PythonTracer {
 			System.out.println();
 			System.out.print("Please enter a file name (or 'quit' to quit): ");
 			fileName = scan.nextLine();
+            System.out.println();
 		}
 		
 		System.out.print("Program terminating successfully...");
@@ -148,7 +149,7 @@ public class PythonTracer {
 					else {
 						stack.peek().getBlockComplexity().setLogPower(1);
 					}
-                    System.out.println("    Found update statement, updating block " + stack.peek().getName());
+                    System.out.println("    Found update statement, updating block " + stack.peek().getName() + ":");
                     System.out.format("%-23s%-30s%-30s", "        Block " + stack.peek().getName() + ":", "block complexity = " + stack.peek().getBlockComplexity().toString(), "highest sub-complexity = " + stack.peek().getHighestSubComplexity().toString());
                     System.out.println("\n");
 				}
