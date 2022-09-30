@@ -76,14 +76,18 @@ public class PythonTracer {
 						if(oldTopComplexity.getNPower() >= stack.peek().getHighestSubComplexity().getNPower()) {
 							if(oldTopComplexity.getNPower() > stack.peek().getHighestSubComplexity().getNPower()) {
 								stack.peek().setHighestSubComplexity(oldTopComplexity);
+								System.out.println("    Leaving block " + oldTop.getName() + ", updating block " + stack.peek().getName() + ":");
 							}
 							else {
 								if(oldTopComplexity.getLogPower() > stack.peek().getHighestSubComplexity().getLogPower()) {
 									stack.peek().setHighestSubComplexity(oldTopComplexity);
+									System.out.println("    Leaving block " + oldTop.getName() + ", updating block " + stack.peek().getName() + ":");
 								}
 							}
 						}
-						System.out.println("    Leaving block " + oldTop.getName() + ", updating block " + stack.peek().getName() + ":");
+						else{
+							System.out.println("    Leaving block " + oldTop.getName() + ", nothing to update.");
+						}
 						System.out.format("%-23s%-30s%-30s", "        Block " + stack.peek().getName() + ":", "block complexity = " + stack.peek().getBlockComplexity().toString(), "highest sub-complexity = " + stack.peek().getHighestSubComplexity().toString());
 						System.out.println("\n");
 					}
