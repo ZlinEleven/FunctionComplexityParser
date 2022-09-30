@@ -69,7 +69,10 @@ public class PythonTracer {
 				while(indents < stack.size()) {
 					if(indents == 0) {
 						System.out.println("    Leaving block " + stack.peek().getName() + ".");
-						return stack.peek().getBlockComplexity();
+						CodeBlock finalBlock = stack.pop();
+						int totalNPower = finalBlock.getBlockComplexity().getNPower() + finalBlock.getHighestSubComplexity().getNPower();
+						int totalLogPower = finalBlock.getBlockComplexity().getLogPower() + finalBlock.getHighestSubComplexity().getLogPower();
+						return new Complexity(totalNPower, totalLogPower);
 					}
 					else {
 						CodeBlock oldTop = stack.pop();
@@ -93,26 +96,8 @@ public class PythonTracer {
 						System.out.println("\n");
 					}
 				}
-				if(currentLine.contains("def ") || currentLine.contains("for") || currentLine.contains("while") || currentLine.contains("if") || currentLine.contains("elif") || currentLine.contains("else")) {
-					String keyword;
-					if(currentLine.contains("def")) {
-						keyword = "def";
-					}
-					else if(currentLine.contains("for")) {
-						keyword = "for";
-					}
-					else if(currentLine.contains("while")) {
-						keyword = "while";
-					}
-					else if(currentLine.contains("if")) {
-						keyword = "if";
-					}
-					else if(currentLine.contains("else if")) {
-						keyword = "else if";
-					}
-					else {
-						keyword = "else";
-					}
+				if(!checkKeyword(currentLine).equals("")) {
+					String keyword = checkKeyword(currentLine);
 					
 					CodeBlock newPush = new CodeBlock();
 					if(stack.isEmpty()) {
@@ -164,10 +149,24 @@ public class PythonTracer {
 	
 		while(stack.size() > 1) {
 			CodeBlock oldTop = stack.pop();
-			Complexity oldTopComplexity = oldTop.getBlockComplexity();
-			if(oldTopComplexity.getNPower() > stack.peek().getHighestSubComplexity().getNPower()) {
-				stack.peek().setHighestSubComplexity(oldTopComplexity);
+			Complexity oldTopComplexity = new Complexity(oldTop.getBlockComplexity().getNPower() + oldTop.getHighestSubComplexity().getNPower(), oldTop.getBlockComplexity().getLogPower() + oldTop.getHighestSubComplexity().getLogPower());
+			if(oldTopComplexity.getNPower() >= stack.peek().getHighestSubComplexity().getNPower()) {
+				if(oldTopComplexity.getNPower() > stack.peek().getHighestSubComplexity().getNPower()) {
+					stack.peek().setHighestSubComplexity(oldTopComplexity);
+					System.out.println("    Leaving block " + oldTop.getName() + ", updating block " + stack.peek().getName() + ":");
+				}
+				else {
+					if(oldTopComplexity.getLogPower() > stack.peek().getHighestSubComplexity().getLogPower()) {
+						stack.peek().setHighestSubComplexity(oldTopComplexity);
+						System.out.println("    Leaving block " + oldTop.getName() + ", updating block " + stack.peek().getName() + ":");
+					}
+				}
 			}
+			else{
+				System.out.println("    Leaving block " + oldTop.getName() + ", nothing to update.");
+			}
+			System.out.format("%-23s%-30s%-30s", "        Block " + stack.peek().getName() + ":", "block complexity = " + stack.peek().getBlockComplexity().toString(), "highest sub-complexity = " + stack.peek().getHighestSubComplexity().toString());
+			System.out.println("\n");
 		}
 		System.out.println("    Leaving block " + stack.peek().getName() + ".\n");
 		CodeBlock finalBlock = stack.pop();
@@ -176,4 +175,28 @@ public class PythonTracer {
 		return new Complexity(totalNPower, totalLogPower);
 	}
 
+	public static String checkKeyword(String currentLine){
+		int n = currentLine.length();
+		if(n > 4 && currentLine.substring(0, 4).equals("def ")){
+			return "def";
+		}
+		else if(n > 4 && currentLine.substring(0, 4).equals("for ")){
+			return "for";
+		}
+		else if(n > 6 && currentLine.substring(0, 6).equals("while ")){
+			return "while";
+		}
+		else if(n > 3 && currentLine.substring(0, 3).equals("if ")){
+			return "if";
+		}
+		else if(n > 5 && currentLine.substring(0, 5).equals("elif ")){
+			return "elif";
+		}
+		else if(n > 5 && currentLine.substring(0,5).equals("else")){
+			return "else";
+		}
+		else{
+			return "";
+		}
+	}
 }
