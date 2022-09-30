@@ -56,6 +56,7 @@ public class PythonTracer {
 		Scanner reader = new Scanner(new File(fileName));
 		
 		String currentLine;
+
 		while(reader.hasNextLine()) {
 			currentLine = reader.nextLine();
 			if(!currentLine.isBlank() && !currentLine.contains("#")) {			
@@ -92,7 +93,7 @@ public class PythonTracer {
 						System.out.println("\n");
 					}
 				}
-				if(currentLine.contains("def") || currentLine.contains("for") || currentLine.contains("while") || currentLine.contains("if") || currentLine.contains("elif") || currentLine.contains("else")) {
+				if(currentLine.contains("def ") || currentLine.contains(" for ") || currentLine.contains(" while ") || currentLine.contains(" if ") || currentLine.contains(" elif ") || currentLine.contains(" else ")) {
 					String keyword;
 					if(currentLine.contains("def")) {
 						keyword = "def";
