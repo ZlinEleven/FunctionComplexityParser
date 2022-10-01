@@ -87,6 +87,9 @@ public class PythonTracer {
 									stack.peek().setHighestSubComplexity(oldTopComplexity);
 									System.out.println("    Leaving block " + oldTop.getName() + ", updating block " + stack.peek().getName() + ":");
 								}
+								else{
+									System.out.println("    Leaving block " + oldTop.getName() + ", nothing to update.");
+								}
 							}
 						}
 						else{
@@ -132,9 +135,9 @@ public class PythonTracer {
 					System.out.format("%-23s%-30s%-30s", "        Block " + newPush.getName() + ":", "block complexity = " + newPush.getBlockComplexity().toString(), "highest sub-complexity = " + newPush.getHighestSubComplexity().toString());
 					System.out.println("\n");
 				}
-				else if(stack.peek().getLoopVariable() != null && (currentLine.contains("-=") || currentLine.contains("/="))) {
+				else if(stack.size() > 0 && stack.peek().getLoopVariable() != null && (currentLine.contains("-=") || currentLine.contains("/="))) {
 					if(currentLine.contains("-=")) {
-					stack.peek().getBlockComplexity().setNPower(1);
+						stack.peek().getBlockComplexity().setNPower(1);
 					}
 					else {
 						stack.peek().getBlockComplexity().setLogPower(1);
@@ -180,19 +183,19 @@ public class PythonTracer {
 		if(n > 4 && currentLine.substring(0, 4).equals("def ")){
 			return "def";
 		}
-		else if(n > 4 && currentLine.substring(0, 4).equals("for ")){
+		else if(n >= 4 && currentLine.substring(0, 4).equals("for ")){
 			return "for";
 		}
-		else if(n > 6 && currentLine.substring(0, 6).equals("while ")){
+		else if(n >= 6 && currentLine.substring(0, 6).equals("while ")){
 			return "while";
 		}
-		else if(n > 3 && currentLine.substring(0, 3).equals("if ")){
+		else if(n >= 3 && currentLine.substring(0, 3).equals("if ")){
 			return "if";
 		}
-		else if(n > 5 && currentLine.substring(0, 5).equals("elif ")){
+		else if(n >= 5 && currentLine.substring(0, 5).equals("elif ")){
 			return "elif";
 		}
-		else if(n > 5 && currentLine.substring(0,5).equals("else")){
+		else if(n >= 5 && currentLine.substring(0,5).equals("else:")){
 			return "else";
 		}
 		else{
