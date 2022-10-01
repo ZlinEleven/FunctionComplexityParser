@@ -135,7 +135,7 @@ public class PythonTracer {
 					System.out.format("%-23s%-30s%-30s", "        Block " + newPush.getName() + ":", "block complexity = " + newPush.getBlockComplexity().toString(), "highest sub-complexity = " + newPush.getHighestSubComplexity().toString());
 					System.out.println("\n");
 				}
-				else if(stack.size() > 0 && stack.peek().getLoopVariable() != null && (currentLine.contains("-=") || currentLine.contains("/="))) {
+				else if(stack.size() > 0 && stack.peek().getLoopVariable() != null && currentLine.contains(stack.peek().getLoopVariable()) && (currentLine.contains("-=") || currentLine.contains("/="))) {
 					if(currentLine.contains("-=")) {
 						stack.peek().getBlockComplexity().setNPower(1);
 					}
