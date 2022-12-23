@@ -3,5 +3,5 @@ function and returns the time complexity in big-Oh notation. The restrictions be
 file and operations and keywords are limited
 
 What I learned:
-    - How to read a file using scanner
-    - The stack data structure
+ - How to read a file using scanner
+ - The stack data structure
