@@ -1,7 +1,3 @@
-/* Zhenbin Lin, 114866923, Recitation section 04 */
-
-// package Project1;
-
 import java.io.*;
 import java.util.Scanner;
 

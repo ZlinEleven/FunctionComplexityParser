@@ -1,5 +1,3 @@
-/* Zhenbin Lin, 114866923, Recitation section 04 */
-
 /**
  * This class represents a block of code. It can either represent a function, loop, statement, etc. Attributes include: name (the block),
  * blockComplexity (the complexity of the current block), highestSubComplexity (highest complexity of block contained within the current block),

@@ -1,5 +1,3 @@
-/* Zhenbin Lin, 114866923, Recitation section 04 */
-
 /**
  * This class represents a Big-Oh notation class that will hold the time complexity of a block of code. The complexities are limited to
  * n and log(n)

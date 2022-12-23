@@ -1,5 +1,3 @@
-/* Zhenbin Lin, 114866923, Recitation section 04 */
-
 /**
  * A basic stack class with a capacity of 20
  * @author zhenb
